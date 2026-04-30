@@ -36,8 +36,7 @@ export default function Register() {
 
   return (
     <div className="p-4">
-      <h2>Register</h2>
-
+    <h2 className="text-xl">Register Page</h2>
       <form onSubmit={(e)=>{ e.preventDefault(); form.handleSubmit() }}>
         <input placeholder="Name"
           onChange={(e)=>form.setFieldValue('name', e.target.value)} />
