@@ -27,8 +27,7 @@ export default function Login() {
 
   return (
     <div className="p-4">
-      <h2>Login</h2>
-
+    <h2 className="text-xl">Login Page</h2>
       <form onSubmit={(e) => { e.preventDefault(); form.handleSubmit() }}>
         <input
           placeholder="Email"
