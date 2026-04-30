@@ -24,8 +24,8 @@ export default function Users() {
 
   return (
     <div className="p-4">
-      <h2>Users</h2>
-
+    git add .
+<h2>Users Table</h2>
       <table border={1}>
         <thead>
           <tr>
