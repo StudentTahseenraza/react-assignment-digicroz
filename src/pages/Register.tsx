@@ -1,71 +1,91 @@
 import { useForm } from '@tanstack/react-form'
-import { z } from 'zod'
 import { useState } from 'react'
-
-const registerSchema = z.object({
-  name: z.string().min(2, "Name required"),
-  email: z.string().email(),
-  password: z.string().min(6),
-  country: z.string().min(1),
-  mobile: z.string().min(10),
-})
+import InputField from '../components/common/InputField'
+import Button from '../components/Button'
 
 export default function Register() {
-  const [otpSent, setOtpSent] = useState(false)
+  const [otp, setOtp] = useState(false)
 
   const form = useForm({
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
-      country: '',
-      mobile: '',
-    },
-
-    onSubmit: async ({ value }) => {
-      const result = registerSchema.safeParse(value)
-
-      if (!result.success) {
-        alert(result.error.issues[0].message)
-        return
-      }
-
-      alert("Registered Successfully")
-    },
+    defaultValues: { name:'', email:'', password:'', country:'', mobile:'' },
+    onSubmit: ({ value }) => alert(JSON.stringify(value)),
   })
 
   return (
-    <div className="p-4">
-    <h2 className="text-xl">Register Page</h2>
-      <form onSubmit={(e)=>{ e.preventDefault(); form.handleSubmit() }}>
-        <input placeholder="Name"
-          onChange={(e)=>form.setFieldValue('name', e.target.value)} />
+    <form onSubmit={(e)=>{e.preventDefault(); form.handleSubmit()}}>
+      <h2>Register</h2>
 
-        <input placeholder="Email"
-          onChange={(e)=>form.setFieldValue('email', e.target.value)} />
+      <InputField placeholder="Name" onChange={(e:any)=>form.setFieldValue('name', e.target.value)} />
+      <InputField placeholder="Email" onChange={(e:any)=>form.setFieldValue('email', e.target.value)} />
+      <InputField type="password" placeholder="Password" onChange={(e:any)=>form.setFieldValue('password', e.target.value)} />
 
-        <input type="password" placeholder="Password"
-          onChange={(e)=>form.setFieldValue('password', e.target.value)} />
+      <select onChange={(e)=>form.setFieldValue('country', e.target.value)}>
+        <option value="">Select Country</option>
+        <option>India (+91)</option>
+        <option>USA (+1)</option>
+      </select>
 
-        <select onChange={(e)=>form.setFieldValue('country', e.target.value)}>
-          <option value="">Select Country</option>
-          <option>India (+91)</option>
-          <option>USA (+1)</option>
-        </select>
+      <InputField placeholder="Mobile" onChange={(e:any)=>form.setFieldValue('mobile', e.target.value)} />
 
-        <input placeholder="Mobile"
-          onChange={(e)=>form.setFieldValue('mobile', e.target.value)} />
+      {!otp && <Button text="Send OTP" onClick={()=>setOtp(true)} />}
+      {otp && <InputField placeholder="Enter OTP" />}
 
-        {!otpSent && (
-          <button type="button" onClick={()=>setOtpSent(true)}>
-            Send OTP
-          </button>
-        )}
-
-        {otpSent && <input placeholder="Enter OTP" />}
-
-        <button type="submit">Register</button>
-      </form>
-    </div>
+      <Button text="Register" type="submit" />
+    </form>
   )
 }
+
+
+// return (
+//   <div className="flex items-center justify-center h-screen bg-gray-100">
+//     <form
+//       onSubmit={(e) => {
+//         e.preventDefault()
+//         form.handleSubmit()
+//       }}
+//       className="bg-white p-6 rounded shadow-md w-80"
+//     >
+//       <h2 className="text-xl font-bold mb-4 text-center">Register</h2>
+
+//       <input className="w-full border p-2 mb-2 rounded" placeholder="Name"
+//         onChange={(e)=>form.setFieldValue('name', e.target.value)} />
+
+//       <input className="w-full border p-2 mb-2 rounded" placeholder="Email"
+//         onChange={(e)=>form.setFieldValue('email', e.target.value)} />
+
+//       <input type="password" className="w-full border p-2 mb-2 rounded" placeholder="Password"
+//         onChange={(e)=>form.setFieldValue('password', e.target.value)} />
+
+//       <select className="w-full border p-2 mb-2 rounded"
+//         onChange={(e)=>form.setFieldValue('country', e.target.value)}>
+//         <option value="">Select Country</option>
+//         <option>India (+91)</option>
+//         <option>USA (+1)</option>
+//       </select>
+
+//       <input className="w-full border p-2 mb-2 rounded" placeholder="Mobile"
+//         onChange={(e)=>form.setFieldValue('mobile', e.target.value)} />
+
+//       {!otpSent && (
+//         <button
+//           type="button"
+//           onClick={()=>setOtpSent(true)}
+//           className="w-full bg-gray-500 text-white p-2 rounded mb-2"
+//         >
+//           Send OTP
+//         </button>
+//       )}
+
+//       {otpSent && (
+//         <input className="w-full border p-2 mb-2 rounded" placeholder="Enter OTP" />
+//       )}
+
+//       <button
+//         type="submit"
+//         className="w-full bg-green-500 text-white p-2 rounded"
+//       >
+//         Register
+//       </button>
+//     </form>
+//   </div>
+// )
