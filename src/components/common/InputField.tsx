@@ -6,12 +6,27 @@ type Props = {
 
 const InputField = ({ label, value, onChange }: Props) => {
   return (
-    <div style={{ marginBottom: "10px" }}>
-      <label>{label}</label>
+    <div style={{ marginBottom: "16px" }}>
+      <label
+        style={{
+          display: "block",
+          marginBottom: "6px",
+          fontWeight: 500,
+        }}
+      >
+        {label}
+      </label>
+
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        style={{ display: "block", width: "100%", padding: "5px" }}
+        style={{
+          width: "100%",
+          padding: "10px",
+          border: "1px solid #ccc",
+          borderRadius: "6px",
+          outline: "none",
+        }}
       />
     </div>
   );

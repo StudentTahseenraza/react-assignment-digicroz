@@ -1,9 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchUsers } from "../api/userApi";
+import axios from "axios";
 
 export const useUsers = (page: number) => {
   return useQuery({
     queryKey: ["users", page],
-    queryFn: () => fetchUsers(page),
+    queryFn: async () => {
+      const res = await axios.get(
+        "https://jsonplaceholder.typicode.com/users"
+      );
+
+      return res.data;
+    },
   });
 };

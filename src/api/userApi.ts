@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://reqres.in/api/users";
+const BASE_URL = "https://jsonplaceholder.typicode.com/users";
 
 export const fetchUsers = async (page: number) => {
   const res = await axios.get(`${BASE_URL}?page=${page}`);

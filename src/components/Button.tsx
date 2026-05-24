@@ -4,9 +4,26 @@ type ButtonProps = {
   type?: "button" | "submit"
 }
 
-export default function Button({ text, onClick, type = 'button' }: ButtonProps) {
+export default function Button({
+  text,
+  onClick,
+  type = "button",
+}: ButtonProps) {
   return (
-    <button type={type} onClick={onClick} className="bg-blue-500 text-white">
+    <button
+      type={type}
+      onClick={onClick}
+      className="
+        bg-blue-500
+        text-white
+        px-4
+        py-2
+        rounded-md
+        hover:bg-blue-600
+        transition
+        cursor-pointer
+      "
+    >
       {text}
     </button>
   )

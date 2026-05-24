@@ -1,37 +1,114 @@
-import { useState } from "react";
-import { addUser } from "../../api/userApi";
-import { useNavigate } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form"
+import { z } from "zod"
+import { Button, Input } from "@heroui/react"
+import { useNavigate } from "@tanstack/react-router"
 
-const AddUser = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+const userSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+})
 
-  const navigate = useNavigate();
+export default function AddUser() {
+  const navigate = useNavigate()
 
-  const handleSubmit = async () => {
-    await addUser({ name, email });
-    navigate({ to: "/users" });
-  };
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+    },
+
+    validators: {
+      onSubmit: ({ value }) => {
+        const result = userSchema.safeParse(value)
+
+        if (!result.success) {
+          return result.error.flatten().fieldErrors
+        }
+      },
+    },
+
+    onSubmit: async ({ value }) => {
+      console.log(value)
+      navigate({ to: "/users" })
+    },
+  })
 
   return (
-    <div>
-      <h2>Add User</h2>
+    <div
+      style={{
+        maxWidth: "500px",
+        margin: "40px auto",
+        padding: "24px",
+        border: "1px solid #ddd",
+        borderRadius: "10px",
+      }}
+    >
+      <h2 style={{ marginBottom: "20px" }}>
+        Add User
+      </h2>
 
-      <input
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          form.handleSubmit()
+        }}
+      >
+        <form.Field name="name">
+          {(field) => (
+            <div style={{ marginBottom: "18px" }}>
+              <Input
+                placeholder="Name"
+                value={field.state.value}
+                onChange={(e) =>
+                  field.handleChange(e.target.value)
+                }
+              />
 
-      <input
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+              {field.state.meta.errors?.[0] && (
+                <p
+                  style={{
+                    color: "red",
+                    fontSize: "13px",
+                    marginTop: "6px",
+                  }}
+                >
+                  {String(field.state.meta.errors?.[0])}
+                </p>
+              )}
+            </div>
+          )}
+        </form.Field>
 
-      <button onClick={handleSubmit}>Add</button>
+        <form.Field name="email">
+          {(field) => (
+            <div style={{ marginBottom: "18px" }}>
+              <Input
+                placeholder="Email"
+                value={field.state.value}
+                onChange={(e) =>
+                  field.handleChange(e.target.value)
+                }
+              />
+
+              {field.state.meta.errors?.[0] && (
+                <p
+                  style={{
+                    color: "red",
+                    fontSize: "13px",
+                    marginTop: "6px",
+                  }}
+                >
+                  {String(field.state.meta.errors?.[0])}
+                </p>
+              )}
+            </div>
+          )}
+        </form.Field>
+
+        <Button type="submit">
+          Add
+        </Button>
+      </form>
     </div>
-  );
-};
-
-export default AddUser;
+  )
+}
